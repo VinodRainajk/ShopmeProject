@@ -33,8 +33,6 @@ public class UserRepositoryTest {
 		userEntity userentity = new userEntity();
 		userentity.setFirstName("Vinod");
 		userentity.setLastName("Raina");
-		userentity.setUsername("VinodRainaJk");
-
 		userEntity userentity2 =  userRepositories.save(userentity);
 		System.out.println("userentity2 "+userentity2.getId());
 		assertThat(userentity2.getId()).isGreaterThan(0);

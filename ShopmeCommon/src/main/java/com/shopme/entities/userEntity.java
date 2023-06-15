@@ -7,9 +7,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -20,8 +22,7 @@ public class userEntity {
 	    @GeneratedValue
 		Integer Id; 
 	    
-	    @Column(nullable=false)	    
-		String username;
+
 
 		public List<userRole> getRoles() {
 			return roles;
@@ -33,6 +34,17 @@ public class userEntity {
 		String password;
 		String firstName;
 		String lastName;
+		String photosImagePath;
+		
+		@Transient 
+		public String getPhotosImagePath() {
+			 return "/UserPhotos/" + this.Id + "/" + this.photos;
+		}
+
+		public void setPhotosImagePath(String photosImagePath) {
+			this.photosImagePath = photosImagePath;
+		}
+
 		public String getEmail() {
 			return email;
 		}
@@ -49,13 +61,13 @@ public class userEntity {
 			this.enabled = enabled;
 		}
 		Date DOB;
-		String photo;
+		String photos;
 		String email;
 		Boolean enabled;
 		
-		@OneToMany
+		@ManyToMany
 		@JoinTable(name="User_Role", joinColumns={@JoinColumn(name ="UserId", referencedColumnName ="Id")},
-		inverseJoinColumns={@JoinColumn(name ="ID", referencedColumnName ="ID")})
+		inverseJoinColumns={@JoinColumn(name ="id", referencedColumnName ="id")})
 		List<userRole> roles;
 		
 		public userEntity() {
@@ -68,12 +80,7 @@ public class userEntity {
 		public void setId(Integer id) {
 			Id = id;
 		}
-		public String getUsername() {
-			return username;
-		}
-		public void setUsername(String username) {
-			this.username = username;
-		}
+
 		public String getPassword() {
 			return password;
 		}
@@ -98,11 +105,11 @@ public class userEntity {
 		public void setDOB(Date dOB) {
 			DOB = dOB;
 		}
-		public String getPhoto() {
-			return photo;
+		public String getPhotos() {
+			return photos;
 		}
-		public void setPhoto(String photo) {
-			this.photo = photo;
+		public void setPhotos(String photos) {
+			this.photos = photos;
 		}
 
 

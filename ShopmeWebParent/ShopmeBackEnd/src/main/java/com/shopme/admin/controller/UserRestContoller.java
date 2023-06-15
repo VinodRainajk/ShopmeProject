@@ -19,10 +19,11 @@ public class UserRestContoller {
 	}
 
 	@PostMapping("/users/check_email")
-	public String checkEmailUnique(@Param("email") String email)
+	public String checkEmailUnique(@Param("email") String email, @Param("id") String id)
 	{
 		System.out.println("Inside check_email ");
-		return userservice.checkEmailUnique(email);
+
+		return userservice.checkEmailUnique(email,id);
 	}
 	
 }
