@@ -1,5 +1,6 @@
 package com.shopme.admin.controller;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.shopme.admin.service.UserService;
 import com.shopme.admin.service.roleServices;
 import com.shopme.entities.userEntity;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.util.StringUtils;
 
 @Controller()
@@ -63,9 +67,12 @@ public class userController {
 		model.addAttribute("totalItems", listofUsers.getTotalElements());
 		//model.addAttribute("listUsers", userservice.getAllusers(pagenumber));
 		model.addAttribute("sortField", sortField);
-		model.addAttribute("sortDir", sortDir);
+		model.addAttribute("sortDir",(null != sortDir) ? sortDir : "DESC");
 		//model.addAttribute("reverseSortDir", reverseSortDir);
-				
+		System.out.println("Names are");
+		listofUsers.get().forEach((user)-> System.out.println(user.getFirstName()));
+		
+	
 		return "users";
 		
 	}
@@ -120,6 +127,13 @@ public class userController {
 		return getPagedUser(1, "firstName", "asc",model);
 		
 	}
+	
+	@GetMapping("/users/export/excel")
+	public void ExporttoExcel(HttpServletResponse response)
+	{
+		 userservice.generateExcel(response);
+	}
+	
 
 
 }

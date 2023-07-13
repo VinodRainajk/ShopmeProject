@@ -106,8 +106,8 @@
 			<div class="col-sm-8">
 				<th:block th:each="role : ${listRoles}">
 				<input type="checkbox" th:field="*{roles}" 
-					th:text="${role.RoleName}"
-					th:value="${role.getid}"
+					th:text="${role.name}"
+					th:value="${role.id}"
 					class="m-2"
 				/>
 				- <small>[[${role.description}]]</small>

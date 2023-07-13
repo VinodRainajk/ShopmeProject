@@ -1,5 +1,7 @@
 package com.shopme.admin.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -18,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +35,9 @@ import com.shopme.admin.Repositories.UserRepository;
 import com.shopme.entities.userEntity;
 
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+
 
 @Service
 public class UserService {
@@ -73,13 +84,19 @@ public class UserService {
 	{
 		//
 		
-		 Direction direction = SortDirection.equals("ASC")? Sort.Direction.ASC: Sort.Direction.DESC ;
+		 Direction direction = SortDirection.equals("asc")? Sort.Direction.ASC: Sort.Direction.DESC ;
 		 Order order = new Order(direction,sortfiled);
 		 List<Order> orderlist = new ArrayList<>();
-		 orderlist.add(order); 
+		 orderlist.add(order);
+		 System.out.println("result per page "+environment.getProperty("shopme.resultperpage"));
+		 System.out.println("order "+order.getProperty());
+		 System.out.println("pagenumber "+pagenumber);
 		 Integer resultperpage = Integer.valueOf(environment.getProperty("shopme.resultperpage"));
-		 Pageable paging = PageRequest.of(pagenumber, resultperpage,Sort.by(orderlist));
-		return userRepositories.findAll(paging);
+		 Pageable paging = PageRequest.of(0, resultperpage,Sort.by(orderlist));
+		 Page<userEntity> returnpage = userRepositories.findAll(paging);
+		 List<userEntity> products = returnpage.getContent();
+		 products.forEach((user)-> System.out.println(user));
+		return returnpage;
 		
 	}
 	
@@ -147,6 +164,7 @@ public class UserService {
 	
 	public boolean SaveUserPhotos(userEntity user,MultipartFile file) throws IOException
 	{
+		
 		  String uploadDir = "UserPhotos/" + user.getId();
 		  Path path = Paths.get(uploadDir);
 		 
@@ -162,6 +180,55 @@ public class UserService {
 		  Files.copy(file.getInputStream(), filepath, StandardCopyOption.REPLACE_EXISTING);
 
 		return true;
+	}
+	
+	public void  generateExcel(HttpServletResponse response)
+	{
+		//setResponseHeader(response, "application/octet-stream", ".xlsx");
+		//response.setHeader("application/octet-stream", ".xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Expires:", "0"); // eliminates browser caching
+        response.setHeader("Content-Disposition", "attachment; filename="+"UserDetails.xlsx");
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		String SheetName = "Users";
+		 String[] header = { "Id", "Name", "Email",  };
+		 int Row = 0;
+		try {
+			Workbook workbook = new XSSFWorkbook();
+			Sheet sheet =   workbook.createSheet(SheetName);
+			List<userEntity> listofUsers = userRepositories.findAll();
+			Row headerRow = sheet.createRow(Row);
+			
+			for(int idx =0 ; idx< header.length ; idx++)
+			{
+				System.out.println(header[idx]);
+				 Cell cell = headerRow.createCell(idx);
+			     cell.setCellValue(header[idx]);
+			}
+			
+			Row++;
+			for(int idx =0 ; idx< listofUsers.size() ; idx++)
+			{
+				 Row bodyROw = sheet.createRow(Row++);
+				 bodyROw.createCell(0).setCellValue(listofUsers.get(idx).getId());
+				 bodyROw.createCell(1).setCellValue(listofUsers.get(idx).getFirstName());
+				 bodyROw.createCell(2).setCellValue(listofUsers.get(idx).getEmail());
+			}
+			
+			workbook.write(out);
+			ServletOutputStream outputStream = response.getOutputStream();
+			workbook.write(outputStream);
+			workbook.close();
+			outputStream.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 	
 }
