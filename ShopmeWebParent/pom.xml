@@ -50,18 +50,15 @@
 			<artifactId>ojdbc8</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-	
-	<dependency>
-	<groupId>org.webjars</groupId>
-	<artifactId>bootstrap</artifactId>
-	<version>4.3.1</version>
-	</dependency>
 
-	<dependency>
-	<groupId>org.webjars</groupId>
-	<artifactId>jquery</artifactId>
-	<version>3.4.1</version>
-	</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>5.3.0</version>
+		</dependency>
+
 
 	<dependency>
 	    <groupId>org.webjars</groupId>

@@ -71,9 +71,10 @@ public class userController {
 		//model.addAttribute("reverseSortDir", reverseSortDir);
 		System.out.println("Names are");
 		listofUsers.get().forEach((user)-> System.out.println(user.getFirstName()));
+		System.out.println("trying users/users");
 		
 	
-		return "users";
+		return "users/users";
 		
 	}
 
@@ -85,7 +86,7 @@ public class userController {
 		userEntity user = new userEntity();
 		model.addAttribute("user", user);
 		model.addAttribute("listRoles",roleservice.getAllRoles());
-		return "user_form";
+		return "users/user_form";
 		
 	}
 	
@@ -105,7 +106,7 @@ public class userController {
 	
 		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
 		
-		return "redirect:/users";
+		return "redirect:users/users";
 	}
 	
 	
@@ -116,7 +117,7 @@ public class userController {
 		userEntity user = userservice.getUserDetails(userid);
 		model.addAttribute("user", user);
 		model.addAttribute("listRoles",roleservice.getAllRoles());
-		return "user_form";
+		return "users/user_form";
 		
 	}
 	
