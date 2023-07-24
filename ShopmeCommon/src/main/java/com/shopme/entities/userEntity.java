@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -18,6 +19,12 @@ import jakarta.persistence.OneToMany;
 @Table(name = "User_Shopme")
 public class userEntity {
 		
+		@Override
+	public String toString() {
+		return "userEntity [Id=" + Id + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", photosImagePath=" + photosImagePath + ", DOB=" + DOB + ", photos=" + photos + ", email=" + email
+				+ ", enabled=" + enabled + ", roles=" + roles + "]";
+	}
 		@Id
 	    @GeneratedValue
 		Integer Id; 
@@ -65,7 +72,7 @@ public class userEntity {
 		String email;
 		Boolean enabled;
 		
-		@ManyToMany
+		@ManyToMany(fetch = FetchType.EAGER)
 		@JoinTable(name="User_Role", joinColumns={@JoinColumn(name ="UserId", referencedColumnName ="Id")},
 		inverseJoinColumns={@JoinColumn(name ="id", referencedColumnName ="id")})
 		List<userRole> roles;

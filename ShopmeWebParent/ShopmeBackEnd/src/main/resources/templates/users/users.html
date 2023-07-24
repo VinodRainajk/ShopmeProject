@@ -82,22 +82,6 @@
 		</table>
 	</div>
 	
-	<div class="less-details">
-		<div th:each="user : ${listUsers}" class="row m-1">
-			<div class="col-4">
-				<div th:replace="fragments :: user_photos" />			
-			</div>
-			<div class="col-8">
-				<div>[[${user.roles}]]</div>
-				<div class="mt-2">
-					<div th:replace="fragments :: user_status" />
-					&nbsp; 			
-					<div th:replace="fragments :: user_actions" />
-				</div>
-			</div>
-			<div>&nbsp;</div>
-		</div>
-	</div>
 	
 	<div class="text-center m-1" th:if="${totalItems > 0}">
 		<span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>

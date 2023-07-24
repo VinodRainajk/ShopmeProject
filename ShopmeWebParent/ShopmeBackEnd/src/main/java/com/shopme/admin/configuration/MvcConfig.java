@@ -25,9 +25,9 @@ public class MvcConfig implements WebMvcConfigurer {
 		System.out.println("dirName is "+dirName);
 		registry.addResourceHandler("/" + dirName + "/**")
 			.addResourceLocations("file:/" + userPhotosPath + "/");
-		registry.addResourceHandler("/style.css").addResourceLocations("/resources/templates/static/style.css");
-
-
+		//registry.addResourceHandler("/style.css").addResourceLocations("/resources/static/style.css");
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		//registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
 	        WebMvcConfigurer.super.addResourceHandlers(registry);
 	}
 

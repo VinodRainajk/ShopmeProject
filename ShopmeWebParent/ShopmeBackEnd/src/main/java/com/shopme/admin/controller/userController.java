@@ -106,7 +106,7 @@ public class userController {
 	
 		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
 		
-		return "redirect:users/users";
+		return "redirect:/users";
 	}
 	
 	
@@ -133,6 +133,13 @@ public class userController {
 	public void ExporttoExcel(HttpServletResponse response)
 	{
 		 userservice.generateExcel(response);
+	}
+	
+	
+	@GetMapping("/login")
+	public String loginUser()
+	{
+		 return "login";
 	}
 	
 

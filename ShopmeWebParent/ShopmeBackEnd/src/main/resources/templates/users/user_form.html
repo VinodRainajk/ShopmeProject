@@ -50,7 +50,7 @@
 			<div class="col-sm-8">
 				<th:block th:each="role : ${listRoles}">
 				<input type="checkbox" th:field="*{roles}" 
-					th:text="${role.name}"
+					th:text="${role.RoleName}"
 					th:value="${role.id}"
 					class="m-2"
 				/>
