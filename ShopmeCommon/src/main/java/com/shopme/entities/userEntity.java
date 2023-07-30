@@ -47,6 +47,13 @@ public class userEntity {
 		public String getPhotosImagePath() {
 			 return "/UserPhotos/" + this.Id + "/" + this.photos;
 		}
+		
+		@Transient 
+		public String getfullname() 
+		{
+			 return this.firstName+ " "+ this.lastName;
+		}
+
 
 		public void setPhotosImagePath(String photosImagePath) {
 			this.photosImagePath = photosImagePath;
