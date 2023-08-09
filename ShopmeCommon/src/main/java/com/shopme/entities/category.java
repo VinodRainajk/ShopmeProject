@@ -24,13 +24,22 @@ public class category {
 	private String name;
 	
 	private boolean Enabled;
-	
-	@Column(length = 64, nullable = false, unique = true)
+
 	private String alias;
 	
-	@Column(length = 128, nullable = false)
+	
 	private String image;
 	
+	public String getimage() {
+		return image;
+	}
+
+
+
+	public void setimage(String image) {
+		this.image = image;
+	}
+
 	@ManyToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="parent")
 	private category parent;
@@ -41,7 +50,7 @@ public class category {
 	
 	@Transient
 	public String getImagePath() {
-		return "/categoryPhotos/"+this.id+"/"+this.getImage();
+		return "/categoryPhotos/"+this.id+"/"+this.getimage();
 	}
 	
 	
@@ -66,21 +75,9 @@ public class category {
 		return Enabled;
 	}
 
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getAlias() {
 		return alias;
@@ -90,13 +87,7 @@ public class category {
 		this.alias = alias;
 	}
 
-	public String getImage() {
-		return image;
-	}
 
-	public void setImage(String image) {
-		this.image = image;
-	}
 
 	public category getParent() {
 		return parent;

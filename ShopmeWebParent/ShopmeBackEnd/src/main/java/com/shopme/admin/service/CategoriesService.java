@@ -19,11 +19,16 @@ public class CategoriesService {
 	}
 	
 	
+	public category saveCategory(category Category)
+	{
+		return categoriesRepo.save(Category);
+	}
+	
+	
 	public List<category> getAllCategories()
 	{
 		return categoriesRepo.findAll();
 	}
-	
 	
 
 }
