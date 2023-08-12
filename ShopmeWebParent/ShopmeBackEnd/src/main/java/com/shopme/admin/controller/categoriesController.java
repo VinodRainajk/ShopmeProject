@@ -3,6 +3,7 @@ package com.shopme.admin.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,9 +44,24 @@ public class categoriesController {
 									 ,@RequestParam(name = "sortDir") String sortDir
 									,Model model)
 	{
-		System.out.println("Listing out the Categories");
-		List<category> listcategories=  categoriesService.getAllCategories();
+		System.out.println("Listing out the pagenumber "+pagenumber);
+		Page<category>  listcategories=  categoriesService.getAllCategories( sortDir,  sortField,pagenumber-1);
+		long startCount = (pagenumber - 1) * categoriesService.ROOT_CATEGORIES_PER_PAGE + 1;
+		long endCount = startCount + categoriesService.ROOT_CATEGORIES_PER_PAGE - 1;
+		if (endCount > listcategories.getTotalElements()) {
+			endCount = listcategories.getTotalElements();
+		}
 		model.addAttribute("listCategories",listcategories);
+		model.addAttribute("totalPages", listcategories.getTotalPages());
+		model.addAttribute("totalItems", listcategories.getTotalElements());
+		model.addAttribute("currentPage", pagenumber);
+		model.addAttribute("sortField", sortField);
+		model.addAttribute("sortDir", sortDir);
+		//model.addAttribute("keyword", keyword);
+		//model.addAttribute("startCount", startCount);
+		model.addAttribute("endCount", listcategories.getTotalPages());		
+		//model.addAttribute("reverseSortDir", reverseSortDir);
+		
 		return "categories/categories";
 	}
 	
@@ -55,6 +71,8 @@ public class categoriesController {
 	{
 		category newCategory =  new category();
 		model.addAttribute("category",newCategory);
+		//model.addAttribute("listCategories", listCategories);
+		model.addAttribute("pageTitle", "Create New Category");
 		return "categories/category_form";
 	}
 	
@@ -62,12 +80,13 @@ public class categoriesController {
 	public String CreateCategories(category categoryentity,RedirectAttributes redirectAttributes,@RequestParam("fileImage") MultipartFile multipartFile)
 	{
 		System.out.println("Before saving  the Catrgory "+categoryentity.getAlias());
-		System.out.println("Before saving  the imagename "+categoryentity.getimage());
+		//System.out.println("Before saving  the imagename "+categoryentity.getimage());
 		System.out.println("Before saving  the multipartFile "+multipartFile.getName());
 		
-		categoryentity.setimage(multipartFile.getName());
-		category savedCategory = categoriesService.saveCategory(categoryentity);
-		System.out.println("Saved the Catrgory "+savedCategory.getid());
+		
+		categoryentity.setImage(multipartFile.getName());
+		category savedCategory = categoriesService.saveCategory(categoryentity,multipartFile);
+		//System.out.println("Saved the Catrgory "+savedCategory.getid());
 		redirectAttributes.addFlashAttribute("message", "The Category has been saved successfully.");
 		return "redirect:/category_form";
 		//return "categories/category_form";

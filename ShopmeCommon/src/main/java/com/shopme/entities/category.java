@@ -30,13 +30,27 @@ public class category {
 	
 	private String image;
 	
-	public String getimage() {
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public String getImage() {
 		return image;
 	}
 
 
 
-	public void setimage(String image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
@@ -50,26 +64,33 @@ public class category {
 	
 	@Transient
 	public String getImagePath() {
-		return "/categoryPhotos/"+this.id+"/"+this.getimage();
+		return "/categoryPhotos/"+this.id+"/"+this.getImage();
 	}
 	
-	
-	
-	public Integer getid() {
+	public boolean isHasChildren() {
+		return hasChildren;
+	}
+
+	public void setHasChildren(boolean hasChildren) {
+		this.hasChildren = hasChildren;
+	}
+
+	@Transient
+	private boolean hasChildren;
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setid(Integer id) {
+
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getname() {
-		return name;
-	}
 
-	public void setname(String categoryName) {
-		name = categoryName;
-	}
+
+
 
 	public boolean getEnabled() {
 		return Enabled;

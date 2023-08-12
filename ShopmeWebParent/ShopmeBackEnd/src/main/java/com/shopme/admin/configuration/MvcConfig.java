@@ -19,15 +19,19 @@ public class MvcConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		String dirName = "UserPhotos";
 		Path userPhotosDir = Paths.get(dirName);
+		Path CategoreiesPhotosDir = Paths.get("categoryPhotos");
+		
 		
 		String userPhotosPath = userPhotosDir.toFile().getAbsolutePath();
 		System.out.println("path is "+userPhotosPath);
 		System.out.println("dirName is "+dirName);
 		registry.addResourceHandler("/" + dirName + "/**")
 			.addResourceLocations("file:/" + userPhotosPath + "/");
-		//registry.addResourceHandler("/style.css").addResourceLocations("/resources/static/style.css");
+		
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-		//registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
+		
+		registry.addResourceHandler("/" + "categoryPhotos" + "/**")
+		.addResourceLocations("file:/" + CategoreiesPhotosDir.toFile().getAbsolutePath() + "/");
 	        WebMvcConfigurer.super.addResourceHandlers(registry);
 	}
 

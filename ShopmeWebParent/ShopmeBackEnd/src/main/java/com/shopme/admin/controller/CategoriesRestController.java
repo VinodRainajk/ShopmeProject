@@ -22,7 +22,7 @@ public class CategoriesRestController {
 		 if(categoriesrepositories.findcategoryByNameAliasID(catName, catAlias).isPresent())
 		 {
 			 
-			 if(categoriesrepositories.findcategoryByNameAliasID(catName, catAlias).get().getname() ==catName )
+			 if(categoriesrepositories.findcategoryByNameAliasID(catName, catAlias).get().getName() ==catName )
 			 {
 				return "DuplicateName"; 
 			 } else
