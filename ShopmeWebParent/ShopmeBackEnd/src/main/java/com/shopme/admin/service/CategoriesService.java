@@ -6,7 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +27,7 @@ import com.shopme.admin.Repositories.CategoriesRepositories;
 @Service
 public class CategoriesService {
 	
-	public static final int ROOT_CATEGORIES_PER_PAGE = 1;
+	public static final int ROOT_CATEGORIES_PER_PAGE = 4;
 	
 	@Autowired
 	private CategoriesRepositories categoriesRepo; 
@@ -65,6 +67,35 @@ public class CategoriesService {
 		 Page<category> returnpage = categoriesRepo.findAll(paging);
 		
 		return returnpage;
+	}
+	
+	
+	public List<String> listCategories()
+	{
+		List<String> returnlistcategories =  new ArrayList<>();
+		List<category> listcategories = categoriesRepo.findAll();
+		HashMap<String, List<String>> hasehdCategory = new HashMap<>();
+		
+		for(int idx =0; idx< listcategories.size(); idx++)
+		{
+			if(hasehdCategory.containsKey(listcategories.get(idx).getParent().getName()))
+			{
+				List<String> stringList = hasehdCategory.get(listcategories.get(idx).getParent().getName())  ;
+				stringList.add(listcategories.get(idx).getName());
+				hasehdCategory.put(listcategories.get(idx).getParent().getName(), stringList);
+			}else
+			{
+				List<String> stringList = new ArrayList<>();
+				stringList.add(listcategories.get(idx).getName());
+				hasehdCategory.put(listcategories.get(idx).getParent().getName(), stringList);
+			}
+		}
+		
+		
+		
+		
+		
+		return returnlistcategories;
 	}
 	
 	

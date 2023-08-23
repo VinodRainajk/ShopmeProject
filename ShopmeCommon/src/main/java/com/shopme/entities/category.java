@@ -1,6 +1,7 @@
 package com.shopme.entities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -16,6 +17,19 @@ import jakarta.persistence.Transient;
 @Entity
 public class category {
 	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		category other = (category) obj;
+		return Objects.equals(id, other.id);
+	}
+
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -58,6 +72,16 @@ public class category {
 	@JoinColumn(name="parent")
 	private category parent;
 	
+	public category(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	public category() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@OneToMany(mappedBy="parent")
 	private Set<category> childCategories =  new HashSet<category>();
 
@@ -129,6 +153,13 @@ public class category {
 
 	public void setChildCategories(Set<category> childCategories) {
 		this.childCategories = childCategories;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "category [id=" + id + ", name=" + name + "]";
 	}
 
 }

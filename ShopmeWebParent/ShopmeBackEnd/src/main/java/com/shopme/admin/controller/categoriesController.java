@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.entities.category;
 import com.shopme.entities.userEntity;
+import com.shopme.admin.service.CategoriesList;
 import com.shopme.admin.service.CategoriesService;
 
 @Controller
@@ -23,11 +24,13 @@ public class categoriesController {
 	@Autowired
 	private CategoriesService categoriesService; 
 	
-	
+	@Autowired
+	private CategoriesList categorieslist;
 
-	public categoriesController(CategoriesService categoriesService) {
+	public categoriesController(CategoriesService categoriesService,CategoriesList categorieslist) {
 		super();
 		this.categoriesService = categoriesService;
+		this.categorieslist = categorieslist;
 	}
 	
 
@@ -58,7 +61,7 @@ public class categoriesController {
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("sortDir", sortDir);
 		//model.addAttribute("keyword", keyword);
-		//model.addAttribute("startCount", startCount);
+		model.addAttribute("startCount", startCount);
 		model.addAttribute("endCount", listcategories.getTotalPages());		
 		//model.addAttribute("reverseSortDir", reverseSortDir);
 		
@@ -69,9 +72,10 @@ public class categoriesController {
 	@GetMapping("/categories/new")
 	public String CreateCategories(Model model)
 	{
+		//CategoriesList listCategories = new CategoriesList();
 		category newCategory =  new category();
 		model.addAttribute("category",newCategory);
-		//model.addAttribute("listCategories", listCategories);
+		model.addAttribute("listCategories", categorieslist.retunrvaluesback());
 		model.addAttribute("pageTitle", "Create New Category");
 		return "categories/category_form";
 	}
