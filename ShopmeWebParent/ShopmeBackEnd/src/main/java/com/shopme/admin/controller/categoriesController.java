@@ -92,7 +92,7 @@ public class categoriesController {
 		category savedCategory = categoriesService.saveCategory(categoryentity,multipartFile);
 		//System.out.println("Saved the Catrgory "+savedCategory.getid());
 		redirectAttributes.addFlashAttribute("message", "The Category has been saved successfully.");
-		return "redirect:/category_form";
+		return "redirect:/categories";
 		//return "categories/category_form";
 	}
 	
